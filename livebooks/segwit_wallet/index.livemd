@@ -152,7 +152,7 @@ Let's create two public key hashes: a `destination` and a `change`.
 ```elixir
 destination_public_key_hash =
   master_private_key
-  |> PrivateKey.from_derivation_path!("m/44'/1'/0'/0/1")
+  |> PrivateKey.from_derivation_path!("m/49'/1'/0'/0/1")
   |> PublicKey.from_private_key()
   |> PublicKey.hash()
 ```
@@ -160,7 +160,7 @@ destination_public_key_hash =
 ```elixir
 change_public_key_hash =
   master_private_key
-  |> PrivateKey.from_derivation_path!("m/44'/1'/0'/1/1")
+  |> PrivateKey.from_derivation_path!("m/49'/1'/0'/1/1")
   |> PublicKey.from_private_key()
   |> PublicKey.hash()
 ```
