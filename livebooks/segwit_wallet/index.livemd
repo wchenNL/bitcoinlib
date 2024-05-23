@@ -78,12 +78,13 @@ receive_private_key =
 receive_public_key =
   receive_private_key
   |> PublicKey.from_private_key()
+  |> PublicKey.hash()
 ```
 
 Convert the `public key hash` to an `address`, which will be needed by faucets to receive funds
 
 ```elixir
-receive_address = Address.from_public_key(receive_public_key, :p2sh, :testnet)
+receive_address = Address.from_script_hash(receive_public_key, :testnet)
 ```
 
 ## Request some funds
@@ -92,7 +93,7 @@ receive_address = Address.from_public_key(receive_public_key, :p2sh, :testnet)
 
 Go to `mempool.space` by directly forging the URL with the address and wait transactions being confirmed.
 
-Ex: `https://mempool.space/testnet/address/2NDHb9Db9ZwPbvmjNHWmsfcGCkmt4uqEWGZ`
+Ex: `https://mempool.space/testnet/address/2MzhhVCh8GvuXyzbc7wJae9WbYyCH9CUytY`
 
 Now leave that browser tab lying around. Mempool is supposed to issue a cashier bell sound 🔔 when it detects new incoming transactions to that address. When funds become spendable, you'll also hear somewhat of a magic wand sound. 🪄
 
@@ -126,9 +127,9 @@ Here lies the `script pub key`, also known as the `locking script`. This is what
 The following code is defining variables containing what we just talked about.
 
 ```elixir
-transaction_id = "b2ac5c444ba0c58b39ea2a7464600a4e2bb148efb82930a44ee7422a5afea91b"
+transaction_id = "39efb7042d02341a0f6ecced6de32abedf4d78776e6a42d867550b2cebefa3fd"
 vout = 0
-script_pub_key = "a914dbd5018f8b8388746e806cdedabd0b3a26efe70d87"
+script_pub_key = "a91451caa671181d8819ccff9b81ffeb8fdafd95f91f87"
 ```
 
 ## Extract parameters
@@ -140,9 +141,9 @@ Spending from a UTXO invalidates it, creating new ones in the process.
 The current UTXO contains `10000` sats. We intend to send `5000` sats to a new address. This leaves `5000` sats remaining. They must end up in two other destinations: `the change` and `the transaction fee`. The change is another UTXO and we'll keep `4000` sats. The fee is what's leftover and the miner who will include the transaction in a new block will keep it. It is thus implied from the three previous amounts:
 
 ```elixir
-original_amount = 39321
+original_amount = 1_638_523
 destination_amount = 1000
-change_amount = 100
+change_amount = 1_228_523
 fee = original_amount - destination_amount - change_amount
 ```
 
